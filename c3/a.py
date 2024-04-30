@@ -29,6 +29,11 @@ class App:
         Entry(self.window, textvariable=self.path).grid(row=1, column=0)
         Button(self.window, text="loadImg", command=self.load_img).grid(row=1, column=1)
         Button(self.window, text="next", command=self.next_img).grid(row=2, column=0)
+        self.label = Label(self.window)
+        self.label.grid(row=2, column=1)
+        self.label_all = Label(self.window)
+        self.label_all.grid(row=2, column=2)
+
 
     def load_canvas(self):
         self.canvas = Canvas(self.window, height=self.img_resize_y, width=self.img_resize_x)
@@ -69,8 +74,11 @@ class App:
 
 
     def next_img(self):
-        self.current_img_num = self.current_img_num + 1
+        if self.current_img_num is None:
+            self.current_img_num = 0
+        self.label.config(text=self.current_img_num)
         self.img_show(self.current_img_num)
+        self.current_img_num = self.current_img_num + 1
 
     def load_img(self):
         # self.canvas.postscript(file="test.eps")
@@ -88,11 +96,12 @@ class App:
         # ImageGrab.grab().crop((x,y,x1,y1)).save("aaa.jpg")
         # bb = self.canvas.bbox()
         # ImageGrab.grab(bb).save("bbb.jpg")
+        self.path = StringVar("C:\Users\UX506994\Desktop\pic")
         path = self.path.get()
+        self.label_all.config(text=len(self.items))
         if os.path.isdir(path):
             self.items = os.listdir(path)
-        self.current_img_num = 0
-        self.img_show(num=self.current_img_num)
+        self.next_img()
 
 
 
