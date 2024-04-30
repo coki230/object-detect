@@ -96,12 +96,13 @@ class App:
         # ImageGrab.grab().crop((x,y,x1,y1)).save("aaa.jpg")
         # bb = self.canvas.bbox()
         # ImageGrab.grab(bb).save("bbb.jpg")
-        self.path = StringVar("C:\Users\UX506994\Desktop\pic")
+        self.path.set("C:\\Users\\UX506994\\Desktop\\pic")
+
         path = self.path.get()
-        self.label_all.config(text=len(self.items))
         if os.path.isdir(path):
             self.items = os.listdir(path)
         self.next_img()
+        self.label_all.config(text=len(self.items))
 
 
 
