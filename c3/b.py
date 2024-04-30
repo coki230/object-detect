@@ -1,35 +1,28 @@
-# Import the required libraries
 from tkinter import *
-from tkinter import ttk
-from PIL import ImageTk, Image
+from PIL import ImageGrab, ImageTk, Image
+from numpy import array
+import os
 
-# Create an instance of tkinter frame or window
-win=Tk()
+class App(Tk):
+    def __init__(self, parent):
+        Tk.__init__(self, parent)
+        self.overrideredirect(1) # FRAMELESS CANVAS WINDOW
 
-# Set the size of the window
-win.geometry("700x350")
+        self.width = 900
+        self.height = 640
+        self.img = Image.open("2.jpg").resize((self.width, self.height))
+        self.pimg = ImageTk.PhotoImage(self.img)
+        self.initialize()
 
-def add_label():
-   global label
-   label=Label(win, text="1. A Newly created Label", font=('Aerial 18'))
-   label.pack()
+    def initialize(self):
+        self.c = Canvas(self, width=self.width, height=self.height, background='white')
+        self.c.pack(side=RIGHT, expand=YES, fill=BOTH)
+        self.c.create_image(0, 0, anchor='nw', image=self.pimg)
+        self.run_anim() # RUN ANIMATION METHOD
 
-def remove_label():
-   global label
-   label.pack_forget()
+    def run_anim(self):
+        self.c.update()
+        ImageGrab.grab((0,0,self.width,self.height)).save("savename" + '.jpg')
 
-def update_label():
-   global label
-   label["text"]="2. Yay!! I am updated"
-
-# Create buttons for add/remove/update the label widget
-add=ttk.Button(win, text="Add a new Label", command=add_label)
-add.pack(anchor=W, pady=10)
-
-remove=ttk.Button(win, text="Remove the Label", command=remove_label)
-remove.pack(anchor=W, pady=10)
-
-update=ttk.Button(win, text="Update the Label", command=update_label)
-update.pack(anchor=W, pady=10)
-
-win.mainloop()
+app = App(None)
+app.mainloop()
