@@ -17,8 +17,6 @@ class App:
         self.end_y = 0
         self.move_id = None
         self.window.geometry("750x550")
-        self.img_resize_x = 300
-        self.img_resize_y = 300
         self.path = StringVar()
         self.items = None
 
@@ -60,8 +58,7 @@ class App:
         self.cmb_type['value'] = self.labels
 
     def load_canvas(self):
-        self.canvas = Canvas(self.window, height=self.img_resize_y, width=self.img_resize_x)
-        self.canvas.create_image(0, 0, anchor='nw')
+        self.canvas = Canvas(self.window)
         self.canvas.grid(row=0, column=0)
         self.canvas.bind("<ButtonPress-1>", self.mouse_press)
         self.canvas.bind("<ButtonRelease-1>", self.mouse_release)
@@ -76,10 +73,10 @@ class App:
         self.draw_rectangle(event, "move")
 
     def get_label_format_data(self):
-        center_x = (self.end_x - self.star_x) / 2 / self.img_resize_x
-        center_y = (self.end_y - self.star_y) / 2 / self.img_resize_y
-        width = (self.end_x - center_x) / 2 / self.img_resize_x
-        height = (self.end_y - center_y) / 2 / self.img_resize_y
+        center_x = (self.end_x - self.star_x) / 2
+        center_y = (self.end_y - self.star_y) / 2
+        width = (self.end_x - center_x) / 2
+        height = (self.end_y - center_y) / 2
         return str(center_x) + self.split + str(center_y) + self.split + str(width) + self.split + str(height)
 
     def mouse_release(self, event):
@@ -101,7 +98,7 @@ class App:
     def img_show(self, num):
         self.load_canvas()
         if self.items is not None and num < len(self.items):
-            self.img = Image.open(self.path.get() + "/" + self.items[num]).resize((self.img_resize_x, self.img_resize_y))
+            self.img = Image.open(self.path.get() + "/" + self.items[num])
             self.pimg = ImageTk.PhotoImage(self.img)
             self.canvas.create_image(0, 0, anchor='nw', image=self.pimg)
 
